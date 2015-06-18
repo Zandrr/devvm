@@ -1,157 +1,163 @@
-" We use a vim
-set nocompatible
-"
-" Colo(u)red or not colo(u)red
-" If you want color you should set this to true
-"
-let color = "true"
-"
-if has("gui")
-   " No tearoff menus
-   set guioptions-=t
+"vimrc!
 
-   " No toolbar
-   set guioptions-=T
 
-   " Always use both toolbars to help X maintian window size
-   set guioptions-=L
-   set guioptions+=r
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set 7 lines to the cursor - when moving vertically using j/k
+ set so=7
 
-   "Icon
-   set guioptions+=l
+" Turn on the WiLd menu
+ set wildmenu
 
-   " Use console dialogs
-   set guioptions+=c
+" Ignore compiled files
+ set wildignore=*.o,*~,*.pyc
 
-   " No automatic fork to the background
-   set guioptions+=f
-   if has("gui")
-       "set guifont=Fixed\ [Misc]/11/-1/5/50/0/0/0/1/0
-       set guifont=Monospace\ 11
-   elseif has("unix")
-         set guifont=-adobe-courier-medium-r-normal-*-*-120-*-*-m-*-hp-roman8
-   endif
-   
-   " Don't use autoselect in non-unix environments
-   if !has("unix")
-      set guioptions-=a
-   endif
+" Always show current position
+ set ruler
 
-   if has("win32")
-      set lines=50
-      set columns=100
-   endif
+" Height of the command bar
+ set cmdheight=2
 
-   " ALT-SPACE is System menu
-   nmap <M-Space> :simalt ~<CR>
-   imap <M-Space> <C-O>:simalt ~<CR>
-   cmap <M-Space> <C-C>:simalt ~<CR>
+" A buffer becomes hidden when it is abandoned
+ set hid
 
-   " Colors
-   "if v:version >= 600
-   colorscheme northsky
-   colorscheme northsky
-   "else
-   "   set background=light
-   "   source ~/.vim/colors/northsky.vim
-   "endif
+" Configure backspace so it acts as it should act
+ set backspace=eol,start,indent
+ set whichwrap+=<,>,h,l
 
-   syntax on
-else
-    if has("syntax")
-        if color == "true"
-            " This will switch colors ON
-            "so ${VIMRUNTIME}/syntax/syntax.vim
-            "colorscheme evening
-            colorscheme default
-        syntax on
-        else
-            " this switches colors OFF
-            syntax off
-            set t_Co=0
-        endif
-    endif
+" Ignore case when searching
+ set ignorecase
+
+" When searching try to be smart about cases 
+ set smartcase
+
+" Highlight search results
+ set hlsearch
+
+" Makes search act like search in modern browsers
+ set incsearch
+
+" Don't redraw while executing macros (good performance config)
+ set lazyredraw
+
+" For regular expressions turn magic on
+ set magic
+
+" Show matching brackets when text indicator is over them
+ set showmatch
+
+" How many tenths of a second to blink when matching brackets
+ set mat=2
+
+" No annoying sound on errors
+ set noerrorbells
+ set novisualbell
+ set t_vb=
+ set tm=500
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+ syntax enable
+
+ colorscheme northsky 
+ set background=dark
+
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guioptions-=T
+    set guioptions+=e
+    set t_Co=256
+    set guitablabel=%M\ %t
 endif
 
-if has("autocmd")
-   if v:version >= 600
-      " Enable file type detection.
-      " Use the default filetype settings, so that mail gets 'tw' set to 72,
-      " 'cindent' is on in C files, etc.
-      " Also load indent files, to automatically do language-dependent indenting.
-      filetype plugin indent on
-    endif
+" Set utf8 as standard encoding and en_US as the standard language
+ set encoding=utf8
+
+" Use Unix as the standard file type
+ set ffs=unix,dos,mac
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+ set expandtab
+
+" Be smart when using tabs ;)
+ set smarttab
+
+" 1 tab == 4 spaces
+ set shiftwidth=4
+ set tabstop=4
+
+" Linebreak on 120 characters
+ set lbr
+ set tw=120
+
+ set ai "Auto indent
+ set si "Smart indent
+ set wrap "Wrap lines
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+ set nobackup
+ set nowb
+ set noswapfile
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Smart way to move between windows
+ map <C-j> <C-W>j
+ map <C-k> <C-W>k
+ map <C-h> <C-W>h
+ map <C-l> <C-W>l
+
+" Return to last edit position when opening files
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+ nmap <M-j> mz:m+<cr>`z
+ nmap <M-k> mz:m-2<cr>`z
+ vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+ vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+ if has("mac") || has("macunix")
+   nmap <D-j> <M-j>
+   nmap <D-k> <M-k>
+   vmap <D-j> <M-j>
+   vmap <D-k> <M-k>
 endif
 
-set textwidth=120
-set wrapmargin=120 
-"set mouse=a
-set nomousefocus
-set mousehide
-set backspace=2 whichwrap+=<,>,[,] 
-set history=50
-set viminfo='20,\"50,n$HOME/.viminfo
-set visualbell
-set autoindent
-set smartindent 
-set sw=4
-set tabstop=4
-set smarttab                                                                                                                             
-"set list
-set expandtab                                                                                                                            
-set shiftround                                                                                                                           
-set ruler                                                                                                                                
-set showmode                                                                                                                             
-set showcmd                                                                                                                              
-set tildeop                                                                                                                              
-set showmatch                                                                                                                            
-set nowrap                                                                                                                               
-set nosol                                                                                                                                
-set autowrite                                                                                                                            
-set wc=9                                                                                                                                 
-set wcm=0                                                                                                                                
-set nowmnu                                                                                                                               
-set wildmenu                                                                                                                             
-set tags=tags,./tags                                                                                                                     
-set nohlsearch                                                                                                                           
-set incsearch                                                                                                                            
-set showcmd                                                                                                                              
-set cmdheight=1                                                                                                                          
-set cmdwinheight=10                                                                                                                      
-set gdefault                                                                                                                             
-set infercase                                                                                                                            
-set splitbelow                                                                                                                           
-set splitright                                                                                                                          
-set hidden                                                                                                                               
-"set textwidth=0                                                                                                                          
-set laststatus=2                                                                                                                         
-set lazyredraw   
-autocmd Filetype python setlocal list ts=4 expandtab sw=4
-autocmd Filetype markdown setlocal list ts=4 expandtab sw=4 textwidth=80
+" Delete trailing white space on save
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
-"Cscope Quickfix
-let Cscope_JumpError = 0
-"let Cscope_PopupMenu = 1
-
-"Commands here
-"vsplit
-"wincmd h
-"split
-"wincmd j
-"wincmd l
 
 " Ctrl-S is save
 map <C-S> :w<CR>
 imap <C-S> <C-O><C-S>
 vmap <C-S> <C-C><C-S>
-
-" Leader commands
-map <leader>bn  :bn<CR>
-map <leader>ls  :ls<CR>
-
-" File explorer
-map <leader>x :Explore<CR>
-map <leader>sx :Sexplore<CR>
-
 " ~/.vimrc ends here
+
 

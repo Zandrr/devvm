@@ -1,9 +1,20 @@
 
-export GOPATH=$HOME/git/go
-export PATH=$PATH:$GOPATH/bin
 export EDITOR=vim
-alias cdp='cd $GOPATH/src/github.com/pblcache/pblcache'
-alias vimgo='vim -u ~/.vimrc.go'
+
+# Git Aliases
+alias gs="git status"
+alias gd="git diff --patience --ignore-space-change"
+alias gcb="git checkout -b"
+alias gb="git branch"
+alias ga="git add"
+alias gh="git hist"
+alias be="bundle exec"
+alias gm="git checkout master"
+alias gcm="git commit -m"
+
+# Random Aliases
+alias notes="vim ~/Desktop/notes.txt"
+alias v="vim"
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
